@@ -1,0 +1,26 @@
+{% extends 'all-pics/base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 50px;">
+  <div class="row">
+    <div class="col-md-6">
+      <img style="height:400px;" src="https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2017/01/Instagram-796x398.jpg" alt="">
+
+    </div>
+    <div class="col-md-6" style="">
+      <h2>Sign up</h2>
+    <form method="post" action="">
+      {% csrf_token %}
+      Username:<br>
+      {{ form.username}}<br><br>
+      Email:<br>
+      {{ form.email}}<br><br>
+      Password:<br>
+      {{ form.password2}}<br><br>
+
+      <a href="account/login">Sign up</a>
+      <p>Do have an account??<a href="account/login">login</a></p>
+    </form>
+    </div>
+  </div>
+  {% endblock %}
