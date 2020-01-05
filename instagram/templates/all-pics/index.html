@@ -1,4 +1,15 @@
-<h1>
-  this app is working for now<br>
-  {{ title }}
-</h1>
+{% extends 'all-pics/base.html' %}
+
+{% block content %}
+{{block.super}}
+<div class="container row" style="justify-content: space-around">
+  <div col-md-4>
+    {% for phot in photos %}
+    <h3>{{ phot.name }}</h3><br>
+    <img src="{{ phot.image.url }}" class="img-responsive" alt="Image" width="20%">
+    <p>{{ phot.caption }}</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

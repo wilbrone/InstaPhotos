@@ -16,6 +16,7 @@ def register(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
+            # user = User.objects.create_user(username = username, password1 = password, email = email)
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
@@ -25,12 +26,34 @@ def register(request):
         form = SignUpForm()
     return render(request, 'registration/registration_form.html', {'form': form})
 
+# def login(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             # user = User.objects.create_user(username = username, password1 = password, email = email)
+#             # form.save()
+#             username = form.cleaned_data.get('username')
+#             raw_password = form.cleaned_data.get('password1')
+#             user = authenticate(username=username, password=raw_password)
+#             # login(request, user)
+#             users = User.objects.get(password = password1)
+#             return redirect('index')
+#     else:
+#         form = LoginForm()
+#
+#     return render(request, 'registration/login.html', {'form': form})
+
 
 # @login_required(login_url='/accounts/login/')
 def all_photos(request):
-    title = "You are Home atlast"
+    photos = Image.get_image()
+    return render(request, 'all-pics/index.html', {'photos':photos})
 
-    return render(request, 'all-pics/index.html', {"title":title})
+
+def user_profile(request):
+    pass
+
+
 
 def logout(request):
     pass

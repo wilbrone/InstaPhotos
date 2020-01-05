@@ -20,4 +20,5 @@ from instagram import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'',include('instagram.urls')),
+    path(r'^tinymce/', include('tinymce.urls')),
 ]

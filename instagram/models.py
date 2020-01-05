@@ -10,7 +10,7 @@ class Profile(models.Model):
     profile_photo = models.ImageField(upload_to = 'images/', blank=True)
 
     def __str__(self):
-        return self.full_name
+        return self.bio
 
     def save_editor(self):
         self.save()
@@ -22,7 +22,7 @@ class Comments(models.Model):
     coment = models.CharField(max_length =200)
 
     def __str__(self):
-        return self.name
+        return self.coment
 
 
 
@@ -39,3 +39,9 @@ class Image(models.Model):
 
     class Meta:
         ordering = ['name']
+
+    @classmethod
+    def get_image(cls):
+        images = cls.objects.all()
+
+        return images
