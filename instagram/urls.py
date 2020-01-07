@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns=[
     url('^$',views.all_photos,name='allPhotos'),
-    
+
 
     url('', views.register, name='registration'),
     # url('', views.login, name='login'),
