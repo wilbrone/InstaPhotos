@@ -1,4 +1,5 @@
-from django.conf.urls import url, include
+# from django.conf.urls import url, include
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -6,15 +7,23 @@ from . import views
 
 urlpatterns=[
 
+    path('index/', views.index, name='index'),
+    path('', views.signup, name='signup'),
+    path('account/', include('django.contrib.auth.urls')),
+    path('profile/<username>/', views.profile, name='profile'),
+    # path('user_profile/<username>/', views.user_profile, name='user_profile'),
+    # path('post/<id>', views.post_comment, name='comment'),
+    # path('post/<id>/like', PostLikeToggle.as_view(), name='liked'),
+    # path('api/post/<id>/like', PostLikeAPIToggle.as_view(), name='liked-api'),
+    # path('like', views.like_post, name='like_post'),
+    # path('search/', views.search_profile, name='search'),
+    # path('unfollow/<to_unfollow>', views.unfollow, name='unfollow'),
+    # path('follow/<to_follow>', views.follow, name='follow')
 
-    url('', views.register, name='registration'),
-    url('account/', include('django.contrib.auth.urls')),
-
-    url('^$',views.all_photos,name='allPhotos'),
-    # url('', views.login, name='login'),
-    # url(r'^image/(\d+)',views.single_image,name ='image'),
-    # url(r'^search/', views.search_results, name='search_results'),
-    # url(r'^location/(\d+)', views.location_pics, name='location')
+    # url('', views.register, name='registration'),
+    # url('account/', include('django.contrib.auth.urls')),
+    #
+    # url('^$',views.all_photos,name='home'),
 ]
 
 if settings.DEBUG:

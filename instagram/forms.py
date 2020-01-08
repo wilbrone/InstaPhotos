@@ -12,6 +12,12 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2', )
 
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ('name', 'caption', 'description', 'image',)
+
 # class LoginForm(UserCreationForm):
 #     class Meta:
 #         model = User
@@ -21,3 +27,9 @@ class SignUpForm(UserCreationForm):
 #     class Meta:
 #         model = Image
 #         fields = ('name', 'caption', 'description', 'image')
+
+
+# name = models.CharField(max_length =200)
+# caption = models.CharField(max_length =200)
+# description = models.TextField()
+# image = models
