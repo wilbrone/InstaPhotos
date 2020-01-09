@@ -103,7 +103,7 @@ def user_profile(request, username):
 
 @login_required(login_url='login')
 def post_comment(request, id):
-    image = get_object_or_404(Caption, pk=id)
+    image = get_object_or_404(Image, pk=id)
     is_liked = False
     if image.likes.filter(id=request.user.id).exists():
         is_liked = True
@@ -123,7 +123,7 @@ def post_comment(request, id):
         'is_liked': is_liked,
         'total_likes': image.total_likes()
     }
-    return render(request, 'post.html', params)
+    return render(request, 'all-pics/new_post.html', params)
 
 
 class PostLikeToggle(RedirectView):
@@ -182,7 +182,7 @@ def like_post(request):
         'total_likes': image.total_likes()
     }
     if request.is_ajax():
-        html = render_to_string('likes.html', params, request=request)
+        html = render_to_string('all-pics/likes.html', params, request=request)
         return JsonResponse({'form': html})
 
 
@@ -197,7 +197,7 @@ def search_profile(request):
             'results': results,
             'message': message
         }
-        return render(request, 'result.html', params)
+        return render(request, 'all-pics/result.html', params)
     else:
         message = "You haven't searched for any image category"
     return render(request, 'result.html', {'message': message})
