@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import Image
+from .models import Image,Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -16,20 +16,22 @@ class SignUpForm(UserCreationForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ('name', 'caption', 'description', 'image',)
+        fields = ('name', 'caption', 'image')
 
-# class LoginForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         fields = ('username',  'password1',)
-#
-# class UploadImage(forms.ModelForm):
-#     class Meta:
-#         model = Image
-#         fields = ('name', 'caption', 'description', 'image')
+
+class UpdateUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['name', 'bio', 'profile_photo']
+
 
 
 # name = models.CharField(max_length =200)
 # caption = models.CharField(max_length =200)
 # description = models.TextField()
 # image = models
+
+
+# name = models.CharField(blank=True, max_length=120)
+# bio = models.TextField()
+# profile_photo = mod

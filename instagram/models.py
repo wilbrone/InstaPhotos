@@ -32,13 +32,12 @@ class Profile(models.Model):
         self.delete()
 
 
-class Comments(models.Model):
-    coment = models.CharField(max_length =200)
-    trial = models.CharField(max_length =200)
+    def delete_profile(self):
+        self.delete()
 
-    def __str__(self):
-        return self.coment
-
+    @classmethod
+    def search_profile(cls, name):
+        return cls.objects.filter(user__username__icontains=name).all()
 
 
 class Image(models.Model):
@@ -48,15 +47,50 @@ class Image(models.Model):
     caption = models.CharField(max_length =200)
     description = models.TextField()
     image = models.ImageField(upload_to = 'images/', blank=True)
-    likes = models.CharField(max_length =200)
-    comments = models.ForeignKey(Comments, on_delete=models.CASCADE)
-    profile = models.ForeignKey(User, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True, )
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='posts')
+    created_at = models.DateTimeField(auto_now_add = True, null = True)
+
 
     class Meta:
         ordering = ['-pk']
 
-    @classmethod
-    def get_image(cls):
-        images = cls.objects.all()
+    def get_absolute_url(self):
+        return f"/post/{self.id}"
 
-        return images
+    @property
+    def get_all_comments(self):
+        return self.comments.all()
+
+    def save_image(self):
+        self.save()
+
+    def delete_image(self):
+        self.delete()
+
+    def total_likes(self):
+        return self.likes.count()
+
+    def __str__(self):
+        return f'{self.user.name} Image'
+
+
+class Comments(models.Model):
+    comment = models.TextField()
+    post = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
+    created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return f'{self.user.name} Post'
+
+    class Meta:
+        ordering = ["-pk"]
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
+    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
+
+    def __str__(self):
+        return f'{self.follower} Follow'
