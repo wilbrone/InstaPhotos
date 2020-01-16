@@ -1,36 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
-from tinymce.models import HTMLField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-# Create your models here.
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    profile_picture = models.ImageField(upload_to='images/', default='default.png')
+    bio = models.TextField(max_length=500, default="My Bio", blank=True)
     name = models.CharField(blank=True, max_length=120)
-    bio = models.TextField()
-    profile_photo = models.ImageField(upload_to = 'images/', blank=True)
-
+    location = models.CharField(max_length=60, blank=True)
 
     def __str__(self):
-        return self.bio
-
+        return f'{self.user.username} Profile'
 
     @receiver(post_save, sender=User)
-    def update_user_profile(sender, instance, created, **kwargs):
+    def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-
     def save_profile(self):
-            self.save()
-
-
-    def delete_profile(self):
-        self.delete()
-
+        self.user
 
     def delete_profile(self):
         self.delete()
@@ -39,21 +34,16 @@ class Profile(models.Model):
     def search_profile(cls, name):
         return cls.objects.filter(user__username__icontains=name).all()
 
-
-class Image(models.Model):
-    """docstring for Image."""
-
-    name = models.CharField(max_length =200)
-    caption = models.CharField(max_length =200)
-    description = models.TextField()
-    image = models.ImageField(upload_to = 'images/', blank=True)
+class Caption(models.Model):
+    image = models.ImageField(upload_to='posts/')
+    name = models.CharField(max_length=250, blank=True)
+    caption = models.CharField(max_length=250, blank=True)
     likes = models.ManyToManyField(User, related_name='likes', blank=True, )
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='posts')
-    created_at = models.DateTimeField(auto_now_add = True, null = True)
-
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
-        ordering = ['-pk']
+        ordering = ["-pk"]
 
     def get_absolute_url(self):
         return f"/post/{self.id}"
@@ -72,12 +62,13 @@ class Image(models.Model):
         return self.likes.count()
 
     def __str__(self):
-        return f'{self.user.name} Image'
+        return f'{self.user.name} Caption'
 
 
-class Comments(models.Model):
+
+class Comment(models.Model):
     comment = models.TextField()
-    post = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Caption, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
     created = models.DateTimeField(auto_now_add=True, null=True)
 

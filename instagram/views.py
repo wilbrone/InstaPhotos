@@ -1,20 +1,15 @@
-from django.shortcuts import render,redirect,get_object_or_404
-from django.http import Http404, HttpResponse, request, HttpResponseRedirect, JsonResponse
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib.auth.decorators import login_required
+from .forms import SignUpForm, UpdateUserForm, UpdateUserProfileForm, PostForm, CommentForm
+from django.contrib.auth import login, authenticate
+from .models import Caption, Comment, Profile, Follow
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from django.views.generic import RedirectView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
-import datetime as dt
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-
-from .models import Image
-from instagram.forms import SignUpForm,PostForm,UpdateUserProfileForm
-
 
 
 def signup(request):
@@ -26,16 +21,15 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('all-pics/index')
     else:
         form = SignUpForm()
     return render(request, 'registration/registration_form.html', {'form': form})
 
 
 @login_required(login_url='login')
-@csrf_exempt
 def index(request):
-    images = Image.objects.all()
+    captions = Caption.objects.all()
     users = User.objects.exclude(id=request.user.id)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -46,13 +40,13 @@ def index(request):
             return HttpResponseRedirect(request.path_info)
     else:
         form = PostForm()
-    shows = {
-        'images': images,
+    params = {
+        'captions': captions,
         'form': form,
         'users': users,
 
     }
-    return render(request, 'all-pics/index.html', shows)
+    return render(request, 'index.html', params)
 
 
 @login_required(login_url='login')
@@ -74,7 +68,7 @@ def profile(request, username):
         'images': images,
 
     }
-    return render(request, 'all-pics/profile.html', params)
+    return render(request, 'profile.html', params)
 
 
 @login_required(login_url='login')
@@ -83,7 +77,7 @@ def user_profile(request, username):
     if request.user == user_prof:
         return redirect('profile', username=request.user.username)
     user_posts = user_prof.profile.posts.all()
-
+    
     followers = Follow.objects.filter(followed=user_prof.profile)
     follow_status = None
     for follower in followers:
@@ -98,12 +92,12 @@ def user_profile(request, username):
         'follow_status': follow_status
     }
     print(followers)
-    return render(request, 'all-pics/user-profile.html', params)
+    return render(request, 'user-profile.html', params)
 
 
 @login_required(login_url='login')
 def post_comment(request, id):
-    image = get_object_or_404(Image, pk=id)
+    image = get_object_or_404(Caption, pk=id)
     is_liked = False
     if image.likes.filter(id=request.user.id).exists():
         is_liked = True
@@ -123,7 +117,7 @@ def post_comment(request, id):
         'is_liked': is_liked,
         'total_likes': image.total_likes()
     }
-    return render(request, 'all-pics/new_post.html', params)
+    return render(request, 'post.html', params)
 
 
 class PostLikeToggle(RedirectView):
@@ -182,7 +176,7 @@ def like_post(request):
         'total_likes': image.total_likes()
     }
     if request.is_ajax():
-        html = render_to_string('all-pics/likes.html', params, request=request)
+        html = render_to_string('likes.html', params, request=request)
         return JsonResponse({'form': html})
 
 
@@ -197,7 +191,7 @@ def search_profile(request):
             'results': results,
             'message': message
         }
-        return render(request, 'all-pics/result.html', params)
+        return render(request, 'result.html', params)
     else:
         message = "You haven't searched for any image category"
     return render(request, 'result.html', {'message': message})
@@ -217,7 +211,3 @@ def follow(request, to_follow):
         follow_s = Follow(follower=request.user.profile, followed=user_profile3)
         follow_s.save()
         return redirect('user-profile', user_profile3.user.username)
-
-
-def logout(request):
-    pass
