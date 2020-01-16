@@ -1,1 +1,1 @@
-web: gunicorn awards.wsgi --log-file -
+web: gunicorn instaphoto.wsgi --log-file -
