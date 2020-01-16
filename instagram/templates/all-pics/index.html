@@ -7,7 +7,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-7">
             <div class="row">
-                <button class="btn btn-sm btn-outline-primary ml-4 mb-3" data-toggle="modal" data-target="#Upload">
+                <button class="btn btn-sm btn-outline-danger ml-4 mb-3" data-toggle="modal" data-target="#Upload">
                     Upload Image
                 </button>
                 <div class="modal fade" id="Upload" tabindex="-1" role="dialog"
@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            {% for caption in images %}
+            {% for caption in captions %}
             <div class="card mb-4">
                 <div class="card-title">
                     <img src="{{caption.user.profile_picture.url}}" class="rounded-circle border ml-3 mt-2  mr-3"
@@ -73,7 +73,39 @@
             </div>
             {% endfor %}
         </div>
+        <div class="col-md-4 mt-4 userinfo">
+            <div class="row">
+                <div class="col-md-3 ml-2">
+                    <img class="rounded-circle user-img" src="{{ user.profile.profile_picture.url }}">
+                </div>
+                <div class="col-md-6 mt-4 user-detail">
+                    <span class=" text-secondary"><a
+                            href="{% url 'user_profile' user.username %}">{{ user.username }}</a></span> <br>
+                    <span class=" inname">{{ user.profile.name }}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="card mt-4 mr-2 ml-2">
+                        <div class="card-title text-secondary mt-2 mr-2 ml-2 ">Suggestions</div>
+                        {% for user in users %}
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-2 mr-3 mt-1 mb-2">
+                                    <img class="rounded-circle" src="{{ user.profile.profile_picture.url }}"
+                                         width="45px" height="45px">
+                                </div>
+                                <div class="col-md-6 mr-2 mt-2">
+                                    <span><a href="{% url 'user_profile' user.username  %}">{{user.username}}</a></span>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+                        </div>
 
+                        {% endfor %}
+                    </div>
+                </div>
                 <div class="col-md-2"></div>
             </div>
 

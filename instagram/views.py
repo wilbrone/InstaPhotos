@@ -46,7 +46,7 @@ def index(request):
         'users': users,
 
     }
-    return render(request, 'index.html', params)
+    return render(request, 'all-pics/index.html', params)
 
 
 @login_required(login_url='login')
@@ -68,7 +68,7 @@ def profile(request, username):
         'images': images,
 
     }
-    return render(request, 'profile.html', params)
+    return render(request, 'all-pics/profile.html', params)
 
 
 @login_required(login_url='login')
@@ -92,7 +92,7 @@ def user_profile(request, username):
         'follow_status': follow_status
     }
     print(followers)
-    return render(request, 'user-profile.html', params)
+    return render(request, 'all-pics/user-profile.html', params)
 
 
 @login_required(login_url='login')
@@ -117,7 +117,7 @@ def post_comment(request, id):
         'is_liked': is_liked,
         'total_likes': image.total_likes()
     }
-    return render(request, 'post.html', params)
+    return render(request, 'all-pics/post.html', params)
 
 
 class PostLikeToggle(RedirectView):
@@ -194,7 +194,7 @@ def search_profile(request):
         return render(request, 'result.html', params)
     else:
         message = "You haven't searched for any image category"
-    return render(request, 'result.html', {'message': message})
+    return render(request, 'all-pics/result.html', {'message': message})
 
 
 def unfollow(request, to_unfollow):
@@ -202,7 +202,7 @@ def unfollow(request, to_unfollow):
         user_profile2 = Profile.objects.get(pk=to_unfollow)
         unfollow_d = Follow.objects.filter(follower=request.user.profile, followed=user_profile2)
         unfollow_d.delete()
-        return redirect('user-profile', user_profile2.user.username)
+        return redirect('all-pics/user-profile', user_profile2.user.username)
 
 
 def follow(request, to_follow):
@@ -210,4 +210,4 @@ def follow(request, to_follow):
         user_profile3 = Profile.objects.get(pk=to_follow)
         follow_s = Follow(follower=request.user.profile, followed=user_profile3)
         follow_s.save()
-        return redirect('user-profile', user_profile3.user.username)
+        return redirect('all-pics/user-profile', user_profile3.user.username)
