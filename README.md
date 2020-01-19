@@ -21,7 +21,7 @@ To install all the required dependencies, run `pip install -r requirements.txt` 
 
 https://instag100.herokuapp.com/ to access the deployed application on heroku
 
-
+ 
 ## Support, Further help and contact details
 wilbroneokoth@gmail.com
 
