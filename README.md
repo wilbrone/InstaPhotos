@@ -11,10 +11,6 @@ Django
 postgresql for the database and
 Deployed on Heroku
 
-
-## BDD
-
-
 ## Development server
 To run locally clone the project to you pc `git clone https://github.com/wilbrone/InstaPhotos.git`. Activate the virtual environment, Run `source env/bin/activate` and `python3.6 manage.py runserver` to serve the app locally.
 To install all the required dependencies, run `pip install -r requirements.txt` and start up the server 
