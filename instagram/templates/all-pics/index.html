@@ -7,8 +7,8 @@
         <div class="col-md-1"></div>
         <div class="col-md-7">
             <div class="row">
-                <button class="btn btn-sm btn-outline-danger ml-4 mb-3" data-toggle="modal" data-target="#Upload">
-                    Upload Image
+                <button class="btn btn-sm btn-outline-success ml-4 mb-3" data-toggle="modal" data-target="#Upload">
+                    Add New Image
                 </button>
                 <div class="modal fade" id="Upload" tabindex="-1" role="dialog"
                      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -24,8 +24,8 @@
                                 <form action="" method="post" enctype="multipart/form-data" novalidate>
                                     {% csrf_token %}
                                     {{ form|crispy }}
-                                    <button class="btn btn-sm btn-outline-danger">Upload</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal">
+                                    <button class="btn btn-sm btn-outline-success">Upload</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success" data-dismiss="modal">
                                         Close
                                     </button>
                                 </form>
@@ -40,7 +40,7 @@
                 <div class="card-title">
                     <img src="{{caption.user.profile_picture.url}}" class="rounded-circle border ml-3 mt-2  mr-3"
                          alt="{{caption.user.user.username}}" width="35" height="35">
-                    <a href="{% url 'user_profile' caption.user.user.username  %}" class="mt-4 user">{{caption.user.user.username|title}}</a>
+                    <a href="{% url 'user_profile' caption.user.user.username  %}" class="mt-4 user" style="text-decoration:none; color:black">{{caption.user.user.username|title}}</a>
                 </div>
                 <div class="card-body mb-4">
                     <a href="{% url 'comment' caption.id %}"><div class="card-text"
