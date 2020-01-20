@@ -176,7 +176,7 @@ def like_post(request):
         'total_likes': image.total_likes()
     }
     if request.is_ajax():
-        html = render_to_string('likes.html', params, request=request)
+        html = render_to_string('all-pics/likes.html', params, request=request)
         return JsonResponse({'form': html})
 
 

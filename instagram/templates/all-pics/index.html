@@ -15,7 +15,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Image Upload</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">New Image</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -75,14 +75,6 @@
         </div>
         <div class="col-md-4 mt-4 userinfo">
             <div class="row">
-                <div class="col-md-3 ml-2">
-                    <img class="rounded-circle user-img" src="{{ user.profile.profile_picture.url }}">
-                </div>
-                <div class="col-md-6 mt-4 user-detail">
-                    <span class=" text-secondary"><a
-                            href="{% url 'user_profile' user.username %}">{{ user.username }}</a></span> <br>
-                    <span class=" inname">{{ user.profile.name }}</span>
-                </div>
             </div>
             <div class="row">
                 <div class="col-md-10">
