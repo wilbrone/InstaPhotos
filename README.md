@@ -11,6 +11,11 @@ Django
 postgresql for the database and
 Deployed on Heroku
 
+## BDD
+when users access this app they are prompted with the login page, here they can choose to either register for an account or login, if they have an account all ready. After login or signup the user is navigated to the home page where they get to see what other users have uploaded. They also get to like and or comment on the various photos posted. They can also choose to share their photos by uploading and allowing other to vie like and comment.
+The user can also update their profile. and get to upload profile pictures for their account.
+
+
 ## Development server
 To run locally clone the project to you pc `git clone https://github.com/wilbrone/InstaPhotos.git`. Activate the virtual environment, Run `source env/bin/activate` and `python3.6 manage.py runserver` to serve the app locally.
 To install all the required dependencies, run `pip install -r requirements.txt` and start up the server 
